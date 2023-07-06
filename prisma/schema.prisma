@@ -1,0 +1,36 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_URI")
+}
+
+model User {
+  id                String             @id @default(uuid())
+  email             String             @unique
+  passwordHash      String
+  createdAt         String
+  isUserConfirmed   Boolean            @default(false)
+  isUserSuperAdmin  Boolean            @default(false)
+  EmailConfirmation EmailConfirmation?
+  Contacts          Contact[]
+}
+
+model EmailConfirmation {
+  userId           String  @id
+  confirmationCode String
+  codeForLogin     String?
+  user             User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Contact {
+  id          String @id @default(uuid())
+  firstName   String
+  lastName    String
+  email       String
+  phoneNumber String
+  userId      String
+  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
