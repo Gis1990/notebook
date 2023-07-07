@@ -12,11 +12,16 @@ import { GetContactByIdQuery } from '../../cqrs/queries/contacts/get-contact-by-
 import { GetAllContactsQuery } from '../../cqrs/queries/contacts/get-all-contacts-query';
 import { JwtModule } from '@nestjs/jwt';
 import { UserQueryRepository } from '../../repositories/user-query.repository';
+import { SaveContactsFromScvCommandHandler } from '../../cqrs/commands/contacts/save-contacts-from-scv-file.command-handler';
+import { ConvertContactsToCsvCommandHandler } from '../../cqrs/commands/contacts/convert-contacts-to-scv.command-handler';
+import { S3StorageAdapter } from '../../adapters/file-storage.adapter/file.storage.adapter';
 
 const commandHandlers = [
   CreateContactCommandHandler,
   UpdateContactCommandHandler,
   DeleteContactCommandHandler,
+  SaveContactsFromScvCommandHandler,
+  ConvertContactsToCsvCommandHandler,
 ];
 const queryHandlers = [GetContactByIdQuery, GetAllContactsQuery];
 
@@ -29,6 +34,7 @@ const queryHandlers = [GetContactByIdQuery, GetAllContactsQuery];
     ContactRepository,
     ContactQueryRepository,
     UserQueryRepository,
+    S3StorageAdapter,
     ...commandHandlers,
     ...queryHandlers,
   ],

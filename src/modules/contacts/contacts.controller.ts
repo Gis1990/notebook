@@ -9,11 +9,11 @@ import {
   Post,
   Put,
   Query,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { join } from 'path';
-import { readFileAsync } from '../../utils/fs.utils';
 import { Contact } from '@prisma/client';
 import { AuthBearerGuard } from '../../guards/auth-bearer.guard';
 import { GetAllContactsDto } from './dto/get-all-contacts.dto';
@@ -25,6 +25,10 @@ import { CreateContactCommand } from '../../cqrs/commands/contacts/create-contac
 import { ContactIdValidationDto } from './dto/contact-id-validation.dto';
 import { UpdateContactCommand } from '../../cqrs/commands/contacts/update-contact-by-id.command-handler';
 import { DeleteContactCommand } from '../../cqrs/commands/contacts/delete-contact-by-id.command-handler';
+import { FileInterceptor } from '@nestjs/platform-express';
+import csv from 'csvtojson';
+import { SaveContactsFromScvCommand } from '../../cqrs/commands/contacts/save-contacts-from-scv-file.command-handler';
+import { ConvertContactsToCsvCommand } from '../../cqrs/commands/contacts/convert-contacts-to-scv.command-handler';
 
 @Controller('contacts')
 export class ContactsController {
@@ -76,8 +80,34 @@ export class ContactsController {
     );
   }
 
-  @Get('upload-file')
-  async getPageForUpload(): Promise<any> {
-    return await readFileAsync(join('views', 'index.html'));
+  @Post('upload-file')
+  @UseGuards(AuthBearerGuard)
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadFile(
+    @UploadedFile() file: Express.Multer.File,
+    @CurrentUser() userId: string,
+  ): Promise<Contact[]> {
+    let result;
+    try {
+      const jsonArray = await csv().fromString(file.buffer.toString());
+      result = await this.commandBus.execute(
+        new SaveContactsFromScvCommand(jsonArray, userId),
+      );
+    } catch (error) {
+      console.log(error);
+    }
+    return result;
+  }
+
+  @Get('download-file')
+  @UseGuards(AuthBearerGuard)
+  async downloadFile(@CurrentUser() userId: string): Promise<any> {
+    const dto = {} as GetAllContactsDto;
+    const contacts = await this.queryBus.execute(
+      new GetAllContactsCommand(dto, userId),
+    );
+    return await this.commandBus.execute(
+      new ConvertContactsToCsvCommand(contacts),
+    );
   }
 }

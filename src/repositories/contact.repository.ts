@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma, Contact } from '@prisma/client';
+import { Contact, Prisma } from '@prisma/client';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateContactDto } from '../modules/contacts/dto/create-contact.dto';
 import { UpdateContactDto } from '../modules/contacts/dto/update-contact.dto';
@@ -39,5 +39,21 @@ export class ContactRepository {
       where: { id: contactId },
     });
     return typeof result !== null;
+  }
+
+  async saveContactsFromCsv(
+    dto: CreateContactDto[],
+    userId: string,
+  ): Promise<Prisma.BatchPayload> {
+    const contactsToCreate = dto.map((fileDto) => ({
+      firstName: fileDto.firstName,
+      lastName: fileDto.lastName,
+      email: fileDto.email,
+      phoneNumber: fileDto.phoneNumber,
+      userId: userId,
+    }));
+    return this.prisma.contact.createMany({
+      data: contactsToCreate,
+    });
   }
 }

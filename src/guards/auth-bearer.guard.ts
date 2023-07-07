@@ -30,7 +30,6 @@ export class AuthBearerGuard implements CanActivate {
     const userExist = await this.queryUsersRepository.getUserById(
       tokenPayload.userId,
     );
-
     if (!userExist) {
       throw new UnauthorizedException("User doesn't exist");
     }
