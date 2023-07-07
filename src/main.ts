@@ -5,6 +5,13 @@ import { BadRequestException, ValidationPipe } from '@nestjs/common';
 import { useContainer } from 'class-validator';
 import { ConfigService } from '@nestjs/config';
 import { HttpExceptionFilter } from './http.exception.filter';
+import { SwaggerModule } from '@nestjs/swagger';
+import { AuthModule } from './modules/auth/auth.module';
+import { ContactsModule } from './modules/contacts/contacts.module';
+import {
+  swaggerConfig,
+  swaggerOptions,
+} from '../documentation/swagger/swagger.config';
 
 export const validationPipeSettings = {
   transform: true,
@@ -36,6 +43,11 @@ async function bootstrap() {
   const port = configService.get<number>('MAIN_PORT');
   const serverUrl = `http://localhost:${port}`;
 
+  const usersDocument = SwaggerModule.createDocument(app, swaggerConfig(), {
+    operationIdFactory: (controllerKey: string, methodKey: string) => methodKey,
+    include: [AppModule, AuthModule, ContactsModule],
+  });
+  SwaggerModule.setup('swagger', app, usersDocument, swaggerOptions(serverUrl));
   await app.listen(port, () => {
     console.log(`Application started on ${serverUrl}`);
     console.log(`Swagger documentation on ${serverUrl}/swagger`);

@@ -22,7 +22,7 @@ export class AuthBearerGuard implements CanActivate {
     }
 
     const accessToken = req.headers.authorization.split(' ')[1];
-    const tokenPayload = await this.jwtService.verify(accessToken);
+    const tokenPayload: any = await this.jwtService.decode(accessToken);
     if (!tokenPayload) {
       throw new UnauthorizedException('Wrong token');
     }
@@ -30,12 +30,10 @@ export class AuthBearerGuard implements CanActivate {
     const userExist = await this.queryUsersRepository.getUserById(
       tokenPayload.userId,
     );
-
     if (!userExist) {
       throw new UnauthorizedException("User doesn't exist");
     }
-
-    req.userId = tokenPayload.userId;
+    req.userId = tokenPayload.id;
     req.token = tokenPayload;
     return true;
   }
