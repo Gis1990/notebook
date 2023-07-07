@@ -44,7 +44,7 @@ export class ContactRepository {
   async saveContactsFromCsv(
     dto: CreateContactDto[],
     userId: string,
-  ): Promise<Prisma.BatchPayload> {
+  ): Promise<boolean> {
     const contactsToCreate = dto.map((fileDto) => ({
       firstName: fileDto.firstName,
       lastName: fileDto.lastName,
@@ -52,8 +52,9 @@ export class ContactRepository {
       phoneNumber: fileDto.phoneNumber,
       userId: userId,
     }));
-    return this.prisma.contact.createMany({
+    const result = await this.prisma.contact.createMany({
       data: contactsToCreate,
     });
+    return result.count > 0;
   }
 }

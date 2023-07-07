@@ -16,13 +16,12 @@ import { ErrorResponse } from '../../src/modules/auth/dto/response-dto/errors.re
 import { LoginDto } from '../../src/modules/auth/dto/login.dto';
 import { LoginConfirmationDto } from '../../src/modules/auth/dto/login.confirmation.dto';
 import { TokenResponse } from '../../src/modules/auth/dto/response-dto/tokenResponse';
-import { RegistrationConfirmationDto } from '../../src/modules/auth/dto/registration-confirmation.dto';
 import { SaPermissionDto } from '../../src/modules/auth/dto/sa-permission.dto';
 
 export function ApiRegistration() {
   return applyDecorators(
     ApiTags('Auth'),
-    ApiOperation({ summary: 'A new contacts is registered in the system' }),
+    ApiOperation({ summary: 'A new user is registered in the system' }),
     ApiBody({
       type: RegistrationDto,
       required: true,
@@ -45,7 +44,7 @@ export function ApiRegistration() {
 export function ApiLogin() {
   return applyDecorators(
     ApiTags('Auth'),
-    ApiOperation({ summary: 'Login contacts after registration' }),
+    ApiOperation({ summary: 'Login user after registration' }),
     ApiBody({ type: LoginDto }),
     ApiNoContentResponse({
       description:
@@ -89,10 +88,6 @@ export function ApiRegistrationConfirmation() {
     ApiOperation({
       summary: 'Confirmation of registration via confirmation code',
     }),
-    ApiQuery({
-      type: RegistrationConfirmationDto,
-      required: true,
-    }),
     ApiNoContentResponse({
       description: 'Email was verified. Account was activated',
     }),
@@ -118,6 +113,18 @@ export function ApiGiveUserSuperAdminPermission() {
     ApiBadRequestResponse({
       description: 'If login code is incorrect or expired.',
       type: ErrorResponse,
+    }),
+  );
+}
+
+export function ApiDropDatabase() {
+  return applyDecorators(
+    ApiTags('Dev endpoint'),
+    ApiOperation({
+      summary: 'Clear database: delete all data from all tables/collections',
+    }),
+    ApiNoContentResponse({
+      description: 'All data is deleted',
     }),
   );
 }

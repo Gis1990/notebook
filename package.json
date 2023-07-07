@@ -27,6 +27,7 @@
     "@nestjs/cqrs": "^10.0.1",
     "@nestjs/jwt": "^10.1.0",
     "@nestjs/platform-express": "^9.0.0",
+    "@nestjs/swagger": "^7.1.1",
     "@prisma/client": "^4.16.2",
     "@types/multer": "^1.4.7",
     "bcrypt": "^5.1.0",

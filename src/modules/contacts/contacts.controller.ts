@@ -29,6 +29,14 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import csv from 'csvtojson';
 import { SaveContactsFromScvCommand } from '../../cqrs/commands/contacts/save-contacts-from-scv-file.command-handler';
 import { ConvertContactsToCsvCommand } from '../../cqrs/commands/contacts/convert-contacts-to-scv.command-handler';
+import {
+  ApiCreateContact,
+  ApiDeleteContact,
+  ApiDownloadFile,
+  ApiGetAllContacts,
+  ApiUpdateContact,
+  ApiUploadFile,
+} from '../../../documentation/swagger/contacts.documentation';
 
 @Controller('contacts')
 export class ContactsController {
@@ -37,6 +45,7 @@ export class ContactsController {
   @Get()
   @UseGuards(AuthBearerGuard)
   @HttpCode(HttpStatus.OK)
+  @ApiGetAllContacts()
   async getAllContacts(
     @Query()
     dto: GetAllContactsDto,
@@ -48,6 +57,7 @@ export class ContactsController {
   @Post()
   @UseGuards(AuthBearerGuard)
   @HttpCode(HttpStatus.OK)
+  @ApiCreateContact()
   async createContact(
     @Body() dto: CreateContactDto,
     @CurrentUser() userId: string,
@@ -58,6 +68,7 @@ export class ContactsController {
   @Put(':id')
   @UseGuards(AuthBearerGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiUpdateContact()
   async updateContact(
     @Body() dto: UpdateContactDto,
     @CurrentUser() userId: string,
@@ -71,6 +82,7 @@ export class ContactsController {
   @Delete(':id')
   @UseGuards(AuthBearerGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiDeleteContact()
   async deleteContact(
     @CurrentUser() userId: string,
     @Param() param: ContactIdValidationDto,
@@ -83,10 +95,12 @@ export class ContactsController {
   @Post('upload-file')
   @UseGuards(AuthBearerGuard)
   @UseInterceptors(FileInterceptor('file'))
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiUploadFile()
   async uploadFile(
     @UploadedFile() file: Express.Multer.File,
     @CurrentUser() userId: string,
-  ): Promise<Contact[]> {
+  ): Promise<boolean> {
     let result;
     try {
       const jsonArray = await csv().fromString(file.buffer.toString());
@@ -101,6 +115,8 @@ export class ContactsController {
 
   @Get('download-file')
   @UseGuards(AuthBearerGuard)
+  @HttpCode(HttpStatus.OK)
+  @ApiDownloadFile()
   async downloadFile(@CurrentUser() userId: string): Promise<any> {
     const dto = {} as GetAllContactsDto;
     const contacts = await this.queryBus.execute(

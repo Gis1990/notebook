@@ -5,7 +5,7 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { GetContactByIdCommand } from '../../../cqrs/queries/contacts/get-contact-by-id.query';
 
@@ -20,7 +20,11 @@ export class IsContactIdExistConstraint
     const contact = await this.queryBus.execute(
       new GetContactByIdCommand(value),
     );
-    return !!contact;
+    if (!contact) {
+      throw new NotFoundException(`Contact not found.`);
+    } else {
+      return true;
+    }
   }
   defaultMessage(args: ValidationArguments) {
     return `Incorrect ${args.property}.`;

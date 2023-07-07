@@ -1,6 +1,5 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { ContactRepository } from '../../../repositories/contact.repository';
-import { Prisma } from '@prisma/client';
 import { CreateContactDto } from '../../../modules/contacts/dto/create-contact.dto';
 
 export class SaveContactsFromScvCommand {
@@ -16,9 +15,7 @@ export class SaveContactsFromScvCommandHandler
 {
   constructor(private readonly contactRepository: ContactRepository) {}
 
-  async execute(
-    command: SaveContactsFromScvCommand,
-  ): Promise<Prisma.BatchPayload> {
+  async execute(command: SaveContactsFromScvCommand): Promise<boolean> {
     const validDtos = command.dto.filter(
       (dto) => dto.firstName && dto.lastName && dto.email && dto.phoneNumber,
     );
