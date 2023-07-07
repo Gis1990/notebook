@@ -2,7 +2,6 @@ import { applyDecorators } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiBody,
-  ApiCookieAuth,
   ApiCreatedResponse,
   ApiNoContentResponse,
   ApiOkResponse,
@@ -11,13 +10,14 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { ViewUser } from '../../src/entities/user-view.schema';
-import { RegistrationDto } from '../../src/dto/auth/registration.dto';
-import { LoginDto } from '../../src/dto/auth/login.dto';
-import { TokenResponse } from '../../src/dto/auth/response-dto/tokenResponse';
-import { RegistrationConfirmationDto } from '../../src/dto/auth/registration-confirmation.dto';
-import { ErrorResponse } from '../../src/dto/auth/response-dto/errors.response';
-import { LoginConfirmationDto } from '../../src/dto/auth/login.confirmation.dto';
+import { ViewUser } from '../../src/modules/auth/entities/user-view.schema';
+import { RegistrationDto } from '../../src/modules/auth/dto/registration.dto';
+import { ErrorResponse } from '../../src/modules/auth/dto/response-dto/errors.response';
+import { LoginDto } from '../../src/modules/auth/dto/login.dto';
+import { LoginConfirmationDto } from '../../src/modules/auth/dto/login.confirmation.dto';
+import { TokenResponse } from '../../src/modules/auth/dto/response-dto/tokenResponse';
+import { RegistrationConfirmationDto } from '../../src/modules/auth/dto/registration-confirmation.dto';
+import { SaPermissionDto } from '../../src/modules/auth/dto/sa-permission.dto';
 
 export function ApiRegistration() {
   return applyDecorators(
@@ -98,6 +98,26 @@ export function ApiRegistrationConfirmation() {
     }),
     ApiUnauthorizedResponse({
       description: 'if confirmation code is incorrect',
+    }),
+  );
+}
+
+export function ApiGiveUserSuperAdminPermission() {
+  return applyDecorators(
+    ApiTags('Auth'),
+    ApiOperation({
+      summary: 'Giving super admin permission to user',
+    }),
+    ApiBody({
+      type: SaPermissionDto,
+      required: true,
+    }),
+    ApiNoContentResponse({
+      description: 'Data accepted. Super admin permission was given to user',
+    }),
+    ApiBadRequestResponse({
+      description: 'If login code is incorrect or expired.',
+      type: ErrorResponse,
     }),
   );
 }

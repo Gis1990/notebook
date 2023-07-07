@@ -8,24 +8,27 @@ import {
   Res,
 } from '@nestjs/common';
 import {
+  ApiGiveUserSuperAdminPermission,
   ApiLogin,
   ApiLoginConfirmation,
   ApiRegistration,
   ApiRegistrationConfirmation,
 } from '../../../documentation/swagger/auth.documentation';
-import { RegistrationDto } from '../../dto/auth/registration.dto';
-import { RegistrationConfirmationDto } from '../../dto/auth/registration-confirmation.dto';
-import { LoginDto } from '../../dto/auth/login.dto';
-import { ViewUser } from '../../entities/user-view.schema';
+import { ViewUser } from './entities/user-view.schema';
 import { CommandBus } from '@nestjs/cqrs';
-import { CreateUserCommand } from '../../commands/auth/create-user.command-handler';
-import { RegistrationConfirmationCommand } from '../../commands/auth/registration-confirmation.command-handler';
-import { LoginUserCommand } from '../../commands/auth/login-user.command-handler';
-import { LoginConfirmationDto } from '../../dto/auth/login.confirmation.dto';
-import { TokenResponse } from '../../dto/auth/response-dto/tokenResponse';
+import { CreateUserCommand } from '../../cqrs/commands/auth/create-user.command-handler';
+import { RegistrationConfirmationCommand } from '../../cqrs/commands/auth/registration-confirmation.command-handler';
+import { LoginUserCommand } from '../../cqrs/commands/auth/login-user.command-handler';
 import { Response } from 'express';
-import { LoginUserByCodeCommand } from '../../commands/auth/login-user-by-code.command-handler';
+import { LoginUserByCodeCommand } from '../../cqrs/commands/auth/login-user-by-code.command-handler';
 import { settings } from '../../../config/settings';
+import { GiveUserSuperAdminPermissionCommand } from '../../cqrs/commands/auth/give-user-sa-permission.command-handler';
+import { RegistrationDto } from './dto/registration.dto';
+import { RegistrationConfirmationDto } from './dto/registration-confirmation.dto';
+import { LoginDto } from './dto/login.dto';
+import { LoginConfirmationDto } from './dto/login.confirmation.dto';
+import { TokenResponse } from './dto/response-dto/tokenResponse';
+import { SaPermissionDto } from './dto/sa-permission.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -71,5 +74,16 @@ export class AuthController {
       maxAge: settings.timeLife.TOKEN_TIME,
     });
     return { accessToken: tokens.accessToken };
+  }
+
+  @Post('super-admin-permission')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiGiveUserSuperAdminPermission()
+  async giveUserSuperAdminPermission(
+    @Body() dto: SaPermissionDto,
+  ): Promise<boolean> {
+    return await this.commandBus.execute(
+      new GiveUserSuperAdminPermissionCommand(dto),
+    );
   }
 }

@@ -46,8 +46,12 @@ export class UserRepository {
     return typeof result !== null;
   }
 
-  async deleteUser(id: string): Promise<boolean> {
-    const result = await this.prisma.user.delete({ where: { id } });
+  async updateSaPermission(userId: string): Promise<boolean> {
+    const result = await this.prisma.user.update({
+      where: { id: userId },
+      data: { isUserSuperAdmin: true },
+    });
+
     return typeof result !== null;
   }
 }

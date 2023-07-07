@@ -1,8 +1,8 @@
 import { JwtService } from '@nestjs/jwt';
 import { Injectable } from '@nestjs/common';
-import { PairTokenResponse } from '../dto/auth/response-dto/pair-token.response';
 import { settings } from '../../config/settings';
 import { Tokens } from './tokens.enum';
+import { PairTokenResponse } from '../modules/auth/dto/response-dto/pair-token.response';
 
 @Injectable()
 export class TokensFactory {
