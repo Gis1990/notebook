@@ -11,8 +11,10 @@ import { LoginUserCommand } from '../../cqrs/commands/auth/login-user.command-ha
 import { LoginConfirmationDto } from './dto/login.confirmation.dto';
 import { LoginUserByCodeCommand } from '../../cqrs/commands/auth/login-user-by-code.command-handler';
 import { settings } from '../../../config/settings';
-import { SaPermissionDto } from './dto/sa-permission.dto';
 import { GiveUserSuperAdminPermissionCommand } from '../../cqrs/commands/auth/give-user-sa-permission.command-handler';
+import { JwtService } from '@nestjs/jwt';
+import { UserQueryRepository } from '../../repositories/user-query.repository';
+import { PrismaService } from '../../../prisma/prisma.service';
 
 describe('RegistrationController', () => {
   let authController: AuthController;
@@ -21,7 +23,7 @@ describe('RegistrationController', () => {
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
       controllers: [AuthController],
-      providers: [CommandBus],
+      providers: [CommandBus, JwtService, UserQueryRepository, PrismaService],
     }).compile();
 
     authController = moduleRef.get<AuthController>(AuthController);
@@ -116,16 +118,12 @@ describe('RegistrationController', () => {
 
   describe('giveUserSuperAdminPermission', () => {
     it('should execute give user super admin permission command', async () => {
-      const saPermissionDto: SaPermissionDto = {
-        userId: '123',
-      };
+      const userId = '123';
       const giveUserSuperAdminPermissionCommand =
-        new GiveUserSuperAdminPermissionCommand(saPermissionDto);
+        new GiveUserSuperAdminPermissionCommand(userId);
       jest.spyOn(commandBus, 'execute').mockResolvedValue(true);
 
-      const result = await authController.giveUserSuperAdminPermission(
-        saPermissionDto,
-      );
+      const result = await authController.giveUserSuperAdminPermission(userId);
       expect(commandBus.execute).toHaveBeenCalledWith(
         giveUserSuperAdminPermissionCommand,
       );

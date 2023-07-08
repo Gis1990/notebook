@@ -5,7 +5,7 @@ export class EmailManagerMock {
     return;
   }
 
-  async sendPasswordRecoveryEmail(email: string, recoveryCode: string) {
+  async sendLoginCodeByEmail(email: string, loginCode: string) {
     return;
   }
 }

@@ -4,6 +4,7 @@ import {
   ApiBearerAuth,
   ApiBody,
   ApiConsumes,
+  ApiCreatedResponse,
   ApiForbiddenResponse,
   ApiNoContentResponse,
   ApiNotFoundResponse,
@@ -71,7 +72,7 @@ export function ApiCreateContact() {
   return applyDecorators(
     ApiTags('Contacts'),
     ApiOperation({ summary: 'Create new entry for contact' }),
-    ApiOkResponse({
+    ApiCreatedResponse({
       description: 'Returns new contact',
       type: SwaggerContact,
     }),
@@ -136,7 +137,7 @@ export function ApiUploadFile() {
   return applyDecorators(
     ApiTags('Contacts'),
     ApiBearerAuth(),
-    ApiOperation({ summary: 'Upload csv file for current user' }),
+    ApiOperation({ summary: 'Upload csv-for-test file for current user' }),
     ApiConsumes('multipart/form-data'),
     ApiBody({
       schema: {
@@ -163,10 +164,11 @@ export function ApiDownloadFile() {
     ApiTags('Contacts'),
     ApiBearerAuth(),
     ApiOperation({
-      summary: 'Get link for downloading current users contacts in csv format',
+      summary:
+        'Get link for downloading current users contacts in csv-for-test format',
     }),
     ApiOkResponse({
-      description: 'Link for downloading csv file',
+      description: 'Link for downloading csv-for-test file',
       type: url,
     }),
     ApiUnauthorizedResponse({

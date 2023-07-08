@@ -5,12 +5,19 @@ const validLastName = 'Smith';
 const validEmail = 'someemail@gmail.com';
 const validPhoneNumber = '910999000';
 const validUserId = randomUUID().toString();
+const invalidEmail = 'someemailgmail.com';
 
 export const preparedContactData = {
   valid: {
     firstName: validFirstName,
     lastName: validLastName,
     email: validEmail,
+    phoneNumber: validPhoneNumber,
+  },
+  incorrect: {
+    firstName: validFirstName,
+    lastName: validLastName,
+    email: invalidEmail,
     phoneNumber: validPhoneNumber,
   },
   forUpdate: {

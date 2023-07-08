@@ -24,7 +24,7 @@ export class S3StorageAdapter {
       Bucket: 'notebooktoscvbucket',
       Key: `${uuidv4()}`,
       Body: buffer,
-      ContentType: 'text/csv',
+      ContentType: 'text/csv-for-test',
     };
     const command = new PutObjectCommand(bucketParams);
     try {

@@ -1,12 +1,12 @@
 import { applyDecorators } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiBody,
   ApiCreatedResponse,
   ApiNoContentResponse,
   ApiOkResponse,
   ApiOperation,
-  ApiQuery,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
@@ -16,7 +16,6 @@ import { ErrorResponse } from '../../src/modules/auth/dto/response-dto/errors.re
 import { LoginDto } from '../../src/modules/auth/dto/login.dto';
 import { LoginConfirmationDto } from '../../src/modules/auth/dto/login.confirmation.dto';
 import { TokenResponse } from '../../src/modules/auth/dto/response-dto/tokenResponse';
-import { SaPermissionDto } from '../../src/modules/auth/dto/sa-permission.dto';
 
 export function ApiRegistration() {
   return applyDecorators(
@@ -103,16 +102,12 @@ export function ApiGiveUserSuperAdminPermission() {
     ApiOperation({
       summary: 'Giving super admin permission to user',
     }),
-    ApiBody({
-      type: SaPermissionDto,
-      required: true,
-    }),
+    ApiBearerAuth(),
     ApiNoContentResponse({
       description: 'Data accepted. Super admin permission was given to user',
     }),
-    ApiBadRequestResponse({
-      description: 'If login code is incorrect or expired.',
-      type: ErrorResponse,
+    ApiUnauthorizedResponse({
+      description: 'If the JWT accessToken is missing, expired or incorrect',
     }),
   );
 }
@@ -125,6 +120,18 @@ export function ApiDropDatabase() {
     }),
     ApiNoContentResponse({
       description: 'All data is deleted',
+    }),
+  );
+}
+
+export function GetUserFromDatabaseTest() {
+  return applyDecorators(
+    ApiTags('Dev endpoints'),
+    ApiOperation({
+      summary: 'Get user',
+    }),
+    ApiOkResponse({
+      description: 'Get user',
     }),
   );
 }
