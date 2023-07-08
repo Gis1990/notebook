@@ -4,6 +4,7 @@ import {
   ApiBearerAuth,
   ApiBody,
   ApiConsumes,
+  ApiForbiddenResponse,
   ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -99,6 +100,10 @@ export function ApiUpdateContact() {
     ApiUnauthorizedResponse({
       description: 'If the JWT accessToken is missing, expired or incorrect',
     }),
+    ApiForbiddenResponse({
+      description:
+        "If user try to update contact that doesn't belong to current user and user is not superAdmin",
+    }),
     ApiBadRequestResponse({
       description:
         'If the inputModel has incorrect values (in particular if the contacts with' +
@@ -115,6 +120,10 @@ export function ApiDeleteContact() {
     ApiOperation({ summary: 'Delete contact by id' }),
     ApiNoContentResponse({
       description: 'No content',
+    }),
+    ApiForbiddenResponse({
+      description:
+        "If user try to delete contact that doesn't belong to current user and user is not superAdmin",
     }),
     ApiNotFoundResponse({ description: 'Not found' }),
     ApiUnauthorizedResponse({

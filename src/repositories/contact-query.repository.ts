@@ -20,6 +20,17 @@ export class ContactQueryRepository {
     });
   }
 
+  async getAllContactsForSuperAdmin(
+    dto: GetAllContactsDto,
+  ): Promise<Contact[]> {
+    return this.prisma.contact.findMany({
+      where: {
+        firstName: { contains: dto.searchFirstNameTerm },
+        lastName: { contains: dto.searchLastNameTerm },
+      },
+    });
+  }
+
   async getContactById(contactId: string): Promise<Contact | null> {
     return this.prisma.contact.findUnique({
       where: { id: contactId },
