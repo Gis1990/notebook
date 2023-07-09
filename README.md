@@ -8,7 +8,7 @@
     <li>Выполните команду <code>yarn build</code>.</li>
     <li>Запустите команду <code>yarn start:dev</code>.</li>
   </ol>
-
+<p>Приложение разбито на два модуля auth и contacts,которые находятся в src/modules соответсвенно</p>
 <h2>Postman коллекция</h2>
   <p>Также в папке "postman" есть коллекция для тестирования запросов.</p>
 </body>
