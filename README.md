@@ -1,3 +1,18 @@
+<head>
+  <title>Запуск приложения</title>
+</head>
+<body>
+  <h1>Шаги для запуска приложения:</h1>
+  <ol>
+    <li>Выполните команду <code>yarn install</code>.</li>
+    <li>Запустите команду <code>prisma generate</code>.</li>
+    <li>Выполните команду <code>yarn build</code>.</li>
+    <li>Запустите команду <code>yarn start:dev</code>.</li>
+  </ol>
+
+<h2>Postman коллекция</h2>
+  <p>Также в папке "postman" есть коллекция для тестирования запросов.</p>
+</body>
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>

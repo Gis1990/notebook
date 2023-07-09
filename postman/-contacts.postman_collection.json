@@ -1,0 +1,228 @@
+{
+	"info": {
+		"_postman_id": "8c7e760d-fad7-4474-b035-ad92367b35b8",
+		"name": "/contacts",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21367112"
+	},
+	"item": [
+		{
+			"name": "upload page",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQzMzY4OTEyLTUxYTItNDM1Yi1iNmYxLWI5OTU3YTU3MzYyYyIsImlhdCI6MTY4ODc0NTk5NSwiZXhwIjoxNjg4NzgxOTk1fQ.J578SPRMgXAWr83tAPQMUjVn1o_fbm9gEw57MUD8eZo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/anton/Desktop/Download/myFile0 (1).csv"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/contacts/upload-file",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"contacts",
+						"upload-file"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all Contacts",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQzMzY4OTEyLTUxYTItNDM1Yi1iNmYxLWI5OTU3YTU3MzYyYyIsImlhdCI6MTY4ODc0NTk5NSwiZXhwIjoxNjg4NzgxOTk1fQ.J578SPRMgXAWr83tAPQMUjVn1o_fbm9gEw57MUD8eZo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"loginOrEmail\": \"aaa2\",\r\n  \"password\": \"1245678\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/contacts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"contacts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create contact",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQzMzY4OTEyLTUxYTItNDM1Yi1iNmYxLWI5OTU3YTU3MzYyYyIsImlhdCI6MTY4ODc0NTk5NSwiZXhwIjoxNjg4NzgxOTk1fQ.J578SPRMgXAWr83tAPQMUjVn1o_fbm9gEw57MUD8eZo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"firstName\": \"Alex\",\r\n  \"lastName\": \"Jones\",\r\n  \"email\": \"gmert@gmail.com\",\r\n  \"phoneNumber\": \"48594766738\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/contacts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"contacts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update contact",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImFjZDU4ODE1LTU4NDctNGNiNC04MzAxLWIxNGZiM2JlNzNiZSIsImlhdCI6MTY4ODc0NjI5MiwiZXhwIjoxNjg4NzgyMjkyfQ.L60BDhD8yrK7NJ-EFCWqHRAJb0X1e6iu6nGnI9wfX2k",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"firstName\": \"Ivan\",\r\n  \"lastName\": \"Ivanov\",\r\n  \"email\": \"gmert@gmail.com\",\r\n  \"phoneNumber\": \"594766738\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/contacts/id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"contacts",
+						"id"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete contact",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQzMzY4OTEyLTUxYTItNDM1Yi1iNmYxLWI5OTU3YTU3MzYyYyIsImlhdCI6MTY4ODc0NTk5NSwiZXhwIjoxNjg4NzgxOTk1fQ.J578SPRMgXAWr83tAPQMUjVn1o_fbm9gEw57MUD8eZo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/contacts/Id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"contacts",
+						"Id"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "download contacts in Scv",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQzMzY4OTEyLTUxYTItNDM1Yi1iNmYxLWI5OTU3YTU3MzYyYyIsImlhdCI6MTY4ODc0NTk5NSwiZXhwIjoxNjg4NzgxOTk1fQ.J578SPRMgXAWr83tAPQMUjVn1o_fbm9gEw57MUD8eZo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/contacts/download-file",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"contacts",
+						"download-file"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

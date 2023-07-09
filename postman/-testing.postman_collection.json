@@ -1,0 +1,39 @@
+{
+	"info": {
+		"_postman_id": "8c4010c2-3301-4043-b154-ce7013479310",
+		"name": "/testing",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21367112"
+	},
+	"item": [
+		{
+			"name": "delete all",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"loginOrEmail\": \"aaa2\",\r\n  \"password\": \"1245678\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/testing/deleteAll",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"testing",
+						"deleteAll"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
