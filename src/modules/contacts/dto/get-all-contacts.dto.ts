@@ -11,7 +11,7 @@ export class GetAllContactsDto {
   })
   @IsString()
   @IsOptional()
-  public searchFirstNameTerm: string;
+  searchFirstNameTerm: string;
   @ApiProperty({
     type: String,
     description:
@@ -21,5 +21,5 @@ export class GetAllContactsDto {
   })
   @IsString()
   @IsOptional()
-  public searchLastNameTerm: string;
+  searchLastNameTerm: string;
 }

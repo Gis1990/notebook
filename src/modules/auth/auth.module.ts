@@ -24,14 +24,14 @@ import { TokensFactory } from '../../factories/tokens.factory';
 import { IsUserIdExistConstraint } from './decorators/user-id.decorator';
 import { GiveUserSuperAdminPermissionCommandHandler } from '../../cqrs/commands/auth/give-user-sa-permission.command-handler';
 
-const commandHandlers = [
+export const AuthCommandHandlers = [
   CreateUserCommandHandler,
   RegistrationConfirmationCommandHandler,
   LoginUserByCodeCommandHandler,
   LoginUserCommandHandler,
   GiveUserSuperAdminPermissionCommandHandler,
 ];
-const queryHandlers = [
+export const AuthQueryHandlers = [
   GetUserByIdQuery,
   GetUserByEmailQuery,
   GetUserByConfirmationCodeQuery,
@@ -53,9 +53,9 @@ const queryHandlers = [
     TokensFactory,
     UserQueryRepository,
     UserRepository,
-    ...commandHandlers,
-    ...queryHandlers,
+    ...AuthCommandHandlers,
+    ...AuthQueryHandlers,
   ],
-  exports: [],
+  exports: [AuthModule],
 })
 export class AuthModule {}

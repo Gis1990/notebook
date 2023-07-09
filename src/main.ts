@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import cookieParser from 'cookie-parser';
-import { BadRequestException, ValidationPipe } from '@nestjs/common';
+import { BadRequestException, ValidationPipe, Logger } from '@nestjs/common';
 import { useContainer } from 'class-validator';
 import { ConfigService } from '@nestjs/config';
 import { HttpExceptionFilter } from './http.exception.filter';
@@ -13,7 +13,7 @@ import {
   swaggerOptions,
 } from '../documentation/swagger/swagger.config';
 
-export const validationPipeSettings = {
+const validationPipeSettings = {
   transform: true,
   stopAtFirstError: true,
   exceptionFactory: (errors) => {
@@ -49,8 +49,8 @@ async function bootstrap() {
   });
   SwaggerModule.setup('swagger', app, usersDocument, swaggerOptions(serverUrl));
   await app.listen(port, () => {
-    console.log(`Application started on ${serverUrl}`);
-    console.log(`Swagger documentation on ${serverUrl}/swagger`);
+    Logger.log(`Application started on ${serverUrl}`);
+    Logger.log(`Swagger documentation on ${serverUrl}/swagger`);
   });
 }
 

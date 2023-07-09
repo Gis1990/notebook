@@ -6,6 +6,7 @@ import {
   Post,
   Query,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiGiveUserSuperAdminPermission,
@@ -28,7 +29,8 @@ import { RegistrationConfirmationDto } from './dto/registration-confirmation.dto
 import { LoginDto } from './dto/login.dto';
 import { LoginConfirmationDto } from './dto/login.confirmation.dto';
 import { TokenResponse } from './dto/response-dto/tokenResponse';
-import { SaPermissionDto } from './dto/sa-permission.dto';
+import { CurrentUser } from './decorators/current-user.decorator';
+import { AuthBearerGuard } from '../../guards/auth-bearer.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -78,12 +80,13 @@ export class AuthController {
 
   @Post('super-admin-permission')
   @HttpCode(HttpStatus.NO_CONTENT)
+  @UseGuards(AuthBearerGuard)
   @ApiGiveUserSuperAdminPermission()
   async giveUserSuperAdminPermission(
-    @Body() dto: SaPermissionDto,
+    @CurrentUser() userId: string,
   ): Promise<boolean> {
     return await this.commandBus.execute(
-      new GiveUserSuperAdminPermissionCommand(dto),
+      new GiveUserSuperAdminPermissionCommand(userId),
     );
   }
 }

@@ -1,8 +1,18 @@
-import { Controller, Delete, Get } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+} from '@nestjs/common';
 import { AppService } from './app.service';
 import { TestingRepository } from './repositories/testing.repository';
 import { ApiExcludeEndpoint } from '@nestjs/swagger';
-import { ApiDropDatabase } from '../documentation/swagger/auth.documentation';
+import {
+  ApiDropDatabase,
+  GetUserFromDatabaseTest,
+} from '../documentation/swagger/auth.documentation';
 
 @Controller()
 export class AppController {
@@ -20,5 +30,11 @@ export class AppController {
   @ApiDropDatabase()
   async deleteAll(): Promise<void> {
     await this.testingRepo.deleteAll();
+  }
+  @Get('testing/users/:data')
+  @HttpCode(HttpStatus.OK)
+  @GetUserFromDatabaseTest()
+  async getUserTest(@Param('data') data: string) {
+    return await this.testingRepo.getUser(data);
   }
 }

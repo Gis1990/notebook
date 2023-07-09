@@ -56,7 +56,7 @@ export class ContactsController {
 
   @Post()
   @UseGuards(AuthBearerGuard)
-  @HttpCode(HttpStatus.OK)
+  @HttpCode(HttpStatus.CREATED)
   @ApiCreateContact()
   async createContact(
     @Body() dto: CreateContactDto,

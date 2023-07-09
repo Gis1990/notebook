@@ -2,10 +2,9 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { UserQueryRepository } from '../../../repositories/user-query.repository';
 import { UserRepository } from '../../../repositories/user.repository';
 import { BadRequestException } from '@nestjs/common';
-import { SaPermissionDto } from '../../../modules/auth/dto/sa-permission.dto';
 
 export class GiveUserSuperAdminPermissionCommand {
-  constructor(public readonly dto: SaPermissionDto) {}
+  constructor(public readonly userId: string) {}
 }
 
 @CommandHandler(GiveUserSuperAdminPermissionCommand)
@@ -20,7 +19,7 @@ export class GiveUserSuperAdminPermissionCommandHandler
   async execute(
     command: GiveUserSuperAdminPermissionCommand,
   ): Promise<boolean> {
-    const user = await this.userQueryRepository.getUserById(command.dto.userId);
+    const user = await this.userQueryRepository.getUserById(command.userId);
     if (!user) {
       throw new BadRequestException();
     }

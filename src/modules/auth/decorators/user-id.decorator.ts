@@ -16,7 +16,7 @@ export class IsUserIdExistConstraint implements ValidatorConstraintInterface {
 
   async validate(value: string) {
     const user = await this.queryBus.execute(new GetUserByIdCommand(value));
-    return !user;
+    return !!user;
   }
   defaultMessage(args: ValidationArguments) {
     return `Incorrect ${args.property}.`;

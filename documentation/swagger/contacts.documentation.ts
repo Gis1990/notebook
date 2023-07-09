@@ -4,6 +4,8 @@ import {
   ApiBearerAuth,
   ApiBody,
   ApiConsumes,
+  ApiCreatedResponse,
+  ApiForbiddenResponse,
   ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -70,7 +72,7 @@ export function ApiCreateContact() {
   return applyDecorators(
     ApiTags('Contacts'),
     ApiOperation({ summary: 'Create new entry for contact' }),
-    ApiOkResponse({
+    ApiCreatedResponse({
       description: 'Returns new contact',
       type: SwaggerContact,
     }),
@@ -99,6 +101,10 @@ export function ApiUpdateContact() {
     ApiUnauthorizedResponse({
       description: 'If the JWT accessToken is missing, expired or incorrect',
     }),
+    ApiForbiddenResponse({
+      description:
+        "If user try to update contact that doesn't belong to current user and user is not superAdmin",
+    }),
     ApiBadRequestResponse({
       description:
         'If the inputModel has incorrect values (in particular if the contacts with' +
@@ -116,6 +122,10 @@ export function ApiDeleteContact() {
     ApiNoContentResponse({
       description: 'No content',
     }),
+    ApiForbiddenResponse({
+      description:
+        "If user try to delete contact that doesn't belong to current user and user is not superAdmin",
+    }),
     ApiNotFoundResponse({ description: 'Not found' }),
     ApiUnauthorizedResponse({
       description: 'If the JWT accessToken is missing, expired or incorrect',
@@ -127,7 +137,7 @@ export function ApiUploadFile() {
   return applyDecorators(
     ApiTags('Contacts'),
     ApiBearerAuth(),
-    ApiOperation({ summary: 'Upload csv file for current user' }),
+    ApiOperation({ summary: 'Upload csv-for-test file for current user' }),
     ApiConsumes('multipart/form-data'),
     ApiBody({
       schema: {
@@ -154,10 +164,11 @@ export function ApiDownloadFile() {
     ApiTags('Contacts'),
     ApiBearerAuth(),
     ApiOperation({
-      summary: 'Get link for downloading current users contacts in csv format',
+      summary:
+        'Get link for downloading current users contacts in csv-for-test format',
     }),
     ApiOkResponse({
-      description: 'Link for downloading csv file',
+      description: 'Link for downloading csv-for-test file',
       type: url,
     }),
     ApiUnauthorizedResponse({

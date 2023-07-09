@@ -7,5 +7,5 @@ export class ContactIdValidationDto {
   @IsString()
   @IsNotEmpty()
   @IsContactIdExist()
-  public id: string;
+  id: string;
 }
