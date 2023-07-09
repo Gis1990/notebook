@@ -21,6 +21,8 @@ import {
 import { errorsMessage } from './response/error.response';
 import { CreateContactDto } from '../src/modules/contacts/dto/create-contact.dto';
 import { createContactsResponse } from './response/contacts/create-contact.response';
+import { readFileAsync } from '../utils/fs.utils';
+import { join } from 'node:path';
 
 const validationPipeSettingsForTest = {
   transform: true,
@@ -460,6 +462,67 @@ describe('Test contact controller.', () => {
         .contact()
         .deleteContact(contactId, accessToken2);
       expect(response.status).toBe(HttpStatus.NO_CONTENT);
+    });
+  });
+  describe(`Upload and download contacts`, () => {
+    it('Clear data base.', async () => {
+      await testingRepository.deleteAll();
+    });
+
+    it('Add new users.', async () => {
+      const response = await requests.userFactory().createAndLoginUsers(2);
+      expect.setState({
+        accessToken1: response[0].accessToken,
+        accessToken2: response[1].accessToken,
+      });
+    });
+
+    it(`Status ${HttpStatus.CREATED}.Get all contacts for user 1.`, async () => {
+      const { accessToken1 } = expect.getState();
+      const response1 = await requests
+        .contact()
+        .getAllContacts(preparedGetAllContactsData, accessToken1);
+      expect(response1.status).toBe(HttpStatus.OK);
+      expect(response1.body.length).toBe(0);
+    });
+
+    it(`Status ${HttpStatus.NO_CONTENT}.Upload contacts from csv file by user `, async () => {
+      const { accessToken1 } = expect.getState();
+      const file: any = await readFileAsync(join('csv-for-test', 'myFile.csv'));
+      const response = await requests
+        .contact()
+        .uploadCsvFile(file, accessToken1);
+      expect(response.status).toBe(HttpStatus.NO_CONTENT);
+    });
+
+    it(`Status ${HttpStatus.CREATED}.Get all contacts for user 1.`, async () => {
+      const { accessToken1 } = expect.getState();
+      const response1 = await requests
+        .contact()
+        .getAllContacts(preparedGetAllContactsData, accessToken1);
+      expect(response1.status).toBe(HttpStatus.OK);
+      expect(response1.body.length).toBe(5);
+    });
+
+    it(`Status ${HttpStatus.CREATED}.Create contact for user 1`, async () => {
+      const { accessToken2 } = expect.getState();
+      const response = await requests
+        .contact()
+        .createContact(preparedContactData.valid, accessToken2);
+      expect(response.status).toBe(HttpStatus.CREATED);
+      expect(response.body).toStrictEqual(
+        createContactsResponse(
+          preparedContactData.valid.firstName,
+          preparedContactData.valid.lastName,
+          preparedContactData.valid.email,
+          preparedContactData.valid.phoneNumber,
+        ),
+      );
+    });
+    it(`Status ${HttpStatus.OK}.Create contact for user 1`, async () => {
+      const { accessToken2 } = expect.getState();
+      const response = await requests.contact().downloadCsvFile(accessToken2);
+      expect(response.status).toBe(HttpStatus.OK);
     });
   });
 });

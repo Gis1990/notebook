@@ -14,6 +14,7 @@ export class ConvertContactsToCsvCommandHandler
   constructor(public readonly storageAdapter: S3StorageAdapter) {}
 
   async execute(command: ConvertContactsToCsvCommand): Promise<any> {
+    if (command.dto.length === 0) return 'No contacts to convert';
     const correctData = command.dto.map(
       ({ id, userId, ...contact }) => contact,
     );
