@@ -114,7 +114,7 @@ export function ApiGiveUserSuperAdminPermission() {
 
 export function ApiDropDatabase() {
   return applyDecorators(
-    ApiTags('Dev endpoint'),
+    ApiTags('Dev endpoints'),
     ApiOperation({
       summary: 'Clear database: delete all data from all tables/collections',
     }),
