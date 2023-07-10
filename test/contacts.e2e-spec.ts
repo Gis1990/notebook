@@ -254,13 +254,13 @@ describe('Test contact controller.', () => {
       );
     });
 
-    it(`Status ${HttpStatus.FORBIDDEN}.Update contact which is not yours`, async () => {
+    it(`Status ${HttpStatus.UNAUTHORIZED}.Update contact which is not yours`, async () => {
       const { accessToken1 } = expect.getState();
       const { contactId } = expect.getState();
       const response = await requests
         .contact()
         .updateContact(preparedContactData.forUpdate, contactId, accessToken1);
-      expect(response.status).toBe(HttpStatus.FORBIDDEN);
+      expect(response.status).toBe(HttpStatus.UNAUTHORIZED);
     });
   });
   describe('Delete contacts', () => {
@@ -313,13 +313,13 @@ describe('Test contact controller.', () => {
       expect(response.status).toBe(HttpStatus.NOT_FOUND);
     });
 
-    it(`Status ${HttpStatus.FORBIDDEN}.Delete contact which is not yours`, async () => {
+    it(`Status ${HttpStatus.UNAUTHORIZED}.Delete contact which is not yours`, async () => {
       const { accessToken1 } = expect.getState();
       const { contactId } = expect.getState();
       const response = await requests
         .contact()
         .deleteContact(contactId, accessToken1);
-      expect(response.status).toBe(HttpStatus.FORBIDDEN);
+      expect(response.status).toBe(HttpStatus.UNAUTHORIZED);
     });
 
     it(`Status ${HttpStatus.NO_CONTENT}.Correctly delete contact`, async () => {

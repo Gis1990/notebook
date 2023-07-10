@@ -21,8 +21,8 @@ export class LoginUserByCodeCommandHandler
   ) {}
 
   async execute(command: LoginUserByCodeCommand): Promise<PairTokenResponse> {
-    const user = await this.userQueryRepository.getUserByEmail(
-      command.dto.email,
+    const user = await this.userQueryRepository.getUserByCodeForLogin(
+      command.dto.codeForLogin,
     );
     if (!user) {
       throw new UnauthorizedException();
