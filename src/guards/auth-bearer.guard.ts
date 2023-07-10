@@ -35,7 +35,7 @@ export class AuthBearerGuard implements CanActivate {
     if (!userExist.isUserConfirmed) {
       throw new UnauthorizedException('User not confirmed');
     }
-    req.userId = tokenPayload.id;
+    req.userId = userExist.id;
     req.token = tokenPayload;
     return true;
   }
