@@ -70,6 +70,7 @@ describe('Test contact controller.', () => {
   });
 
   afterAll(async () => {
+    await testingRepository.deleteAll();
     await prismaService.$disconnect();
     await app.close();
   });

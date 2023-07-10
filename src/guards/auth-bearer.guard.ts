@@ -26,12 +26,14 @@ export class AuthBearerGuard implements CanActivate {
     if (!tokenPayload) {
       throw new UnauthorizedException('Wrong token');
     }
-
     const userExist = await this.queryUsersRepository.getUserById(
       tokenPayload.userId,
     );
     if (!userExist) {
       throw new UnauthorizedException("User doesn't exist");
+    }
+    if (!userExist.isUserConfirmed) {
+      throw new UnauthorizedException('User not confirmed');
     }
     req.userId = tokenPayload.id;
     req.token = tokenPayload;

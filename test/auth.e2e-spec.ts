@@ -68,11 +68,7 @@ describe('Test auth controller.', () => {
   });
 
   afterAll(async () => {
-    await prismaService.$disconnect();
-    await app.close();
-  });
-
-  afterAll(async () => {
+    await testingRepository.deleteAll();
     await prismaService.$disconnect();
     await app.close();
   });
